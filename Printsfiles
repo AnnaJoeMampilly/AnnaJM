@@ -1,0 +1,68 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+ 
+// define a class to store movie data
+class movie {
+   char name[30];
+   char runtime[10];
+   char language[15];
+   char lead_actor[30];
+   char genre[20];
+public:
+   void getData(); // get movie data from user
+   void displayData(); // display data
+};
+
+void movie :: getData() {
+   cout << "Enter Name : ";
+   cin.getline(name, 30);
+   cout << "Enter Runtime : ";
+   cin.getline(runtime, 10);
+   cout << "Enter Language : ";
+   cin.getline(language, 15);
+   cout << "Enter Lead Actor : ";
+   cin.getline(lead_actor, 30);
+   cout << "Enter Genre : ";
+   cin.getline(genre, 20);
+}
+
+void movie :: displayData() {
+   cout << "\nName : " << name;
+   cout << "\nRuntime : " << runtime;
+   cout << "\nLanguage : " << language;
+   cout << "\nLead actor : " << lead_actor;
+   cout << "\nGenre : "<<genre;
+   }
+
+int main() {
+  movie m;
+  fstream file;
+  int ch;
+  char ans;
+  do {
+    cout<<"\nEnter details:\n";
+    file.open("details.txt", ios :: out| ios::trunc); // open file for writing
+    m.getData();
+    file.write((char *)&m, sizeof(m));
+    file.close(); // close the file
+    
+    cout<<" 1. Export  details as plain text\n 2. Export details as pdf\n Enter your choice :"; 
+    cin>>ch;
+    
+    switch(ch) {
+
+   case 1:      file.open("details.txt", ios :: in); // open file for reading
+                file.read((char *)&m, sizeof(m));
+                m.displayData();
+		break;
+   //case 2:    use something like libharu to export as pdf
+   }
+   file.close(); // close the file
+ 
+   cout<<"Do you want to continue?(y/n):";
+   cin>>ans;
+   }while(ans == 'y'||ans =='Y');
+   return 0;
+}
